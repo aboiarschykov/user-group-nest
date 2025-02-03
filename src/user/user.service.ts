@@ -2,8 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './models/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { plainToInstance } from 'class-transformer';
-import { UserDto } from './models/dto/user.dto';
 import { CreateUserDto } from './models/dto/create-user.dto';
 
 @Injectable()
@@ -13,20 +11,32 @@ export class UserService {
     private readonly repo: Repository<User>,
   ) {}
 
-  async getUserById(id: number) {
+  async getUserById(id: number, includeGroups: boolean) {
     if (!id) {
       return;
     }
-    const user = await this.repo.findOne({ where: { id } });
+    const findOptions = { where: { id } };
+    if (includeGroups) {
+      findOptions['relations'] = ['groups'];
+    }
+
+    const user = await this.repo.findOne(findOptions);
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    return plainToInstance(UserDto, user);
+    return user;
   }
 
   async createUser(dto: CreateUserDto) {
-    const user = await this.repo.save(this.repo.create(dto));
-    return plainToInstance(UserDto, user);
+    return await this.repo.save(this.repo.create(dto));
+  }
+
+  async deleteUser(id: number) {
+    const user = await this.getUserById(id, false);
+    if (!user) {
+      return;
+    }
+    await this.repo.delete(id);
   }
 }

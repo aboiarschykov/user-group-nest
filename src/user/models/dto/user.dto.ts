@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, plainToInstance, Transform } from 'class-transformer';
+import { GroupDto } from '../../../group/models/dto/group.dto';
 
 export class UserDto {
   @Expose()
@@ -12,4 +13,8 @@ export class UserDto {
 
   @Expose()
   age: number;
+
+  @Expose()
+  @Transform(({ obj }) => plainToInstance(GroupDto, obj.groups))
+  groups: GroupDto[];
 }
