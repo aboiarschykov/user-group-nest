@@ -11,16 +11,12 @@ export class UserService {
     private readonly repo: Repository<User>,
   ) {}
 
-  async getUserById(id: number, includeGroups: boolean) {
+  async getUserById(id: number) {
     if (!id) {
       return;
     }
-    const findOptions = { where: { id } };
-    if (includeGroups) {
-      findOptions['relations'] = ['groups'];
-    }
 
-    const user = await this.repo.findOne(findOptions);
+    const user = await this.repo.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -33,7 +29,7 @@ export class UserService {
   }
 
   async deleteUser(id: number) {
-    const user = await this.getUserById(id, false);
+    const user = await this.getUserById(id);
     if (!user) {
       return;
     }

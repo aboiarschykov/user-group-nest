@@ -1,13 +1,11 @@
 import {
   Body,
-  Controller, DefaultValuePipe,
+  Controller,
   Delete,
   Get,
   Param,
-  ParseBoolPipe,
   ParseIntPipe,
   Post,
-  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './models/dto/create-user.dto';
@@ -20,11 +18,8 @@ export class UserController {
 
   @Get('/:id')
   @Serialize(UserDto)
-  getUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Query('includeGroups', new DefaultValuePipe(false), ParseBoolPipe) includeGroups: boolean
-  ) {
-    return this.userService.getUserById(id, includeGroups);
+  getUser(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.getUserById(id);
   }
 
   @Post()
