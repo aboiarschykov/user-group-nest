@@ -1,15 +1,26 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Session } from '../../../session/models/session.entity';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
+
   @Column()
   name: string;
+
   @Column()
   lastName: string;
+
   @Column()
-  age: number;
+  email: string;
+
   @Column()
   password: string;
+
+  @Column()
+  age: number;
+
+  @OneToOne(() => Session, (session) => session.user, {onDelete: 'CASCADE'})
+  session: Session;
 }

@@ -23,8 +23,7 @@ export class SessionService {
       status: SessionStatus.ACTIVE,
     });
 
-    await this.repo.save(session);
-    return session.id;
+    return this.repo.save(session);
   }
 
   async isSessionActive(sessionId: string) {

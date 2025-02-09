@@ -1,14 +1,5 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Param } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './models/dto/create-user.dto';
 import { UserDto } from './models/dto/user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 
@@ -18,18 +9,12 @@ export class UserController {
 
   @Get('/:id')
   @Serialize(UserDto)
-  getUser(@Param('id', ParseIntPipe) id: number) {
+  getUser(@Param('id') id: string) {
     return this.userService.getUserById(id);
   }
 
-  @Post()
-  @Serialize(UserDto)
-  createUser(@Body() body: CreateUserDto) {
-    return this.userService.createUser(body);
-  }
-
   @Delete('/:id')
-  deleteUser(@Param('id', ParseIntPipe) id: number) {
+  deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
 }
