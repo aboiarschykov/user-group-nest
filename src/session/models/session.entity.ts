@@ -7,7 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './entity/user.entity';
+import { User } from '../../user/models/entity/user.entity';
 
 //TODO Add auto clean for sessions
 @Entity()

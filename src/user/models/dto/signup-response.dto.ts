@@ -1,5 +1,5 @@
 import { UserDto } from './user.dto';
-import { SessionDto } from '../session.dto';
+import { SessionDto } from '../../../session/models/session.dto';
 import { Expose, Transform, Type } from 'class-transformer';
 
 export class SignupResponseDto {

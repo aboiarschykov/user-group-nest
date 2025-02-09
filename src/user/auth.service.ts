@@ -10,10 +10,10 @@ import { SignUpRequestDto } from './models/dto/signup-request.dto';
 import { UserService } from './user.service';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
-import { SessionService } from './session.service';
+import { SessionService } from '../session/session.service';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { UserDto } from './models/dto/user.dto';
-import { SessionDto } from './models/session.dto';
+import { SessionDto } from '../session/models/session.dto';
 import { SignupResponseDto } from './models/dto/signup-response.dto';
 
 const scrypt = promisify(_scrypt);
