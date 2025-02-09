@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { UserService } from './user.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session, SessionStatus } from './models/session.entity';
 import { Repository } from 'typeorm';
