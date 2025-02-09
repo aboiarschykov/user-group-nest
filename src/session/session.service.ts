@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session, SessionStatus } from './models/session.entity';
@@ -14,6 +14,9 @@ export class SessionService {
 
   async createSession(userId: string) {
     const user = await this.userService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException(`User with id ${userId} does not exists`);
+    }
     await this.invalidateAllSessionsForUser(userId);
 
     const expiresAt = addHours(new Date(), 1);

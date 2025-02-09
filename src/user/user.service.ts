@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { FindOneOptions, Repository } from 'typeorm';
 import { User } from './models/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SignUpDto } from './models/dto/sign-up.dto';
+import { SignUpRequestDto } from './models/dto/signup-request.dto';
 import { CreateUserDto } from './models/dto/create-user.dto';
 
 @Injectable()
@@ -13,18 +13,22 @@ export class UserService {
   ) {}
 
   async getUserById(id: string) {
-    if (!id) throw new BadRequestException('User id is required!');
+    if (!id) return ;
 
-    return this.findOneUser({ where: { id } });
+    return this.repo.findOne({ where: { id } });
   }
 
   async getUserByEmail(email: string) {
     if (!email) return;
 
-    return this.findOneUser({ where: { email }});
+    return this.repo.findOne({ where: { email }});
   }
 
   async createUser(dto: CreateUserDto) {
+    const user = await this.getUserByEmail(dto.email);
+    if (user) {
+      throw new BadRequestException(`User with email ${dto.email} already exists`)
+    }
     return await this.repo.save(this.repo.create(dto));
   }
 
@@ -34,14 +38,5 @@ export class UserService {
       return;
     }
     await this.repo.delete(id);
-  }
-
-  private async findOneUser(options: FindOneOptions<User>) {
-    const user = await this.repo.findOne(options);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    return user;
   }
 }

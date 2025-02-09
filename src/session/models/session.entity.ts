@@ -15,7 +15,7 @@ export class Session {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'text' })
   expiresAt: Date;
 
   @CreateDateColumn()
